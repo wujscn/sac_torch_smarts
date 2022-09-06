@@ -190,7 +190,7 @@ class BaseAgent(ABC):
             plt.plot(ego_x,ego_y,color='orange')
             plt.scatter(ego_x[-1], ego_y[-1],color='orange',marker='*',s=80)
         
-        plt.savefig(f'/home/haochen/SMARTS_test_TPDM/test_traj_pic/t_{self.episodes}_{timesteps}.png')
+        plt.savefig(f'./SMARTS_test_TPDM/test_traj_pic/t_{self.episodes}_{timesteps}.png')
 
 
     
@@ -436,7 +436,7 @@ class BaseAgent(ABC):
         print('|Episode:',self.ep_cnt,'|ep-length:',ep_length,"|total_steps:",self.steps,"|Episode-return:",episode_return,'|success_rate:',
         success,"|")
         self.ep_cnt += 1
-        with open('/home/haochen/SMARTS_test_TPDM/'+self.save_name+'.json','w',encoding='utf-8') as writer:
+        with open('./SMARTS_test_TPDM/'+self.save_name+'.json','w',encoding='utf-8') as writer:
             writer.write(json.dumps([self.return_log,self.step_log,self.success_log],ensure_ascii=False,indent=4))
         if self.episodes % self.log_interval == 0:
             self.writer.add_scalar(
@@ -659,7 +659,7 @@ class BaseAgent(ABC):
               f'step:{m_s},{m_std}'
               )
         print('-' * 60)
-        with open('/home/haochen/TPDM_transformer/test_results/torch_'+self.save_name+'_test.json','w',encoding='utf-8') as writer:
+        with open('./TPDM_transformer/test_results/torch_'+self.save_name+'_test.json','w',encoding='utf-8') as writer:
             writer.write(json.dumps([s_r,c_r,stag,m_s,m_std,ego_data],ensure_ascii=False,indent=4))
 
     @abstractmethod

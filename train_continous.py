@@ -4,7 +4,7 @@ import numpy as np
 
 os.environ['CUDA_VISIBLE_DEVICES']='1'
 
-from sacd.agent import SacdAgent,sac_lhc
+from sacd.agent import SacdAgent, sac_lhc
 from smarts.core.agent_interface import AgentInterface, AgentType
 from smarts.core.agent import AgentSpec
 from smarts.env.hiway_env import HiWayEnv
@@ -12,6 +12,8 @@ from smarts.core.agent_interface import NeighborhoodVehicles, RGB,Waypoints
 from smarts.core.controllers import ActionSpaceType
 
 n_experiments = 3
+use_neighbor = False
+
 def reward_adapter(env_obs, env_reward):
     return env_reward
 
@@ -50,7 +52,8 @@ AGENT_ID = "Agent-LHC"
 #     agent_specs=agent_specs,
 # )
 # scenario_paths = [["scenarios/roundabout_easy"],["scenarios/roundabout_medium"],["scenarios/roundabout"]]
-scenario_paths = ["scenarios/double_merge/cross_test"]
+# scenario_paths = ["scenarios/double_merge/cross_test"]
+scenario_path = ["scenarios/roundabout"]
 
 scenario_name = scenario_path[0].split('/')[-1]
 mode = 'lstmfut'
@@ -59,7 +62,7 @@ for i in range(n_experiments):
     print(f'Progress: {i+1}/{n_experiments}')
 
     # create env/
-    env = HiWayEnv(scenarios=scenario_path, agent_specs={AGENT_ID: agent_spec}, headless=True, seed=i)
+    env = HiWayEnv(scenarios=scenario_path, agent_specs={AGENT_ID: agent_spec}, headless=True, seed=i, visdom=True)
     env.agent_id = AGENT_ID
 
     env.action_space = gym.spaces.Box(low=-1, high=1, shape=(2,), dtype=np.float32)
@@ -70,7 +73,7 @@ for i in range(n_experiments):
         # env.observation_space = gym.spaces.Box(low=0, high=1, shape=(80,80,3), dtype=np.float32)
     # print(env.reset())
     print(f'OBS SHAPE:{env.observation_space.shape}')
-    log_dir = f'/home/haochen/SMARTS_test_TPDM/sac_model/sac_log_{mode}_{scenario_name}'
+    log_dir = f'./sac_model/sac_log_{mode}_{scenario_name}'
     agent = sac_lhc.SAC_LHC(env,test_env=None,log_dir=log_dir,num_steps=100000,batch_size=32,
                     memory_size=20000,start_steps=5000,update_interval=1,target_update_interval=1000,
                     use_per=True,dueling_net=False,max_episode_steps=max_episode_steps,multi_step=3,continuous=True,action_space=env.action_space.shape,
@@ -78,4 +81,4 @@ for i in range(n_experiments):
                     save_name=f'log_sac_{mode}_{scenario_name}_{i}_test',seed=i,obs_adapter=obsadapter, neighbor_spec=neighbor_spec,lstm_fut=False)
     agent.run()
     env.close()
-    agent.save_models(f'/home/haochen/SMARTS_test_TPDM/sac_model/_{mode}_{scenario_name}_{i}/')
+    agent.save_models(f'./sac_model/_{mode}_{scenario_name}_{i}/')

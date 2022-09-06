@@ -321,7 +321,7 @@ def decode_map_xml(path):
         # plt.scatter(x,y,s=10)
         cnt+=len(x)
 
-    plt.savefig('/home/haochen/TPDM_transformer/test_maps/test_map_new.png')
+    plt.savefig('./TPDM_transformer/test_maps/test_map_new.png')
     # print(cnt)
     # return plt
 
@@ -366,4 +366,4 @@ def process_map(path):
         polys.append(poly)
 
 if __name__=="__main__":
-    decode_map_xml('/home/haochen/SMARTS/scenarios/left_turn_new/map.net.xml')
+    decode_map_xml('./SMARTS/scenarios/left_turn_new/map.net.xml')

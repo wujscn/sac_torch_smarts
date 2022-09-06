@@ -93,7 +93,7 @@ for scenario_path in scenario_paths:
         env.observation_space = gym.spaces.Box(low=0, high=1, shape=(80,80,3), dtype=np.float32)
     # print(env.reset())
     print(f'OBS SHAPE:{env.observation_space.shape}')
-    log_dir = f'/home/haochen/SMARTS_test_TPDM/sac_model/sac_log_{mode}_{scenario_name}'
+    log_dir = f'./SMARTS_test_TPDM/sac_model/sac_log_{mode}_{scenario_name}'
     agent = sac_lhc.SAC_LHC(env,test_env=None,log_dir=log_dir,num_steps=100000,batch_size=32,
                     memory_size=20000,start_steps=5000,update_interval=1,target_update_interval=1000,
                     use_per=True,dueling_net=False,max_episode_steps=max_episode_steps,multi_step=3,continuous=True,action_space=env.action_space.shape,
@@ -102,7 +102,7 @@ for scenario_path in scenario_paths:
                     use_attn=use_attn,umap=use_map,hist_fut=hist_fut,agg=agg,num_eval_steps=test_episode)
     
     model_name = 'sac_log_cnn_roundabout_medium'
-    # agent.test_policy_path=f'/home/haochen/SMARTS_test_TPDM/sac_model/'+model_name +f'/model/final_{i}/policy.pth'
-    agent.test_policy_path='/home/haochen/SMARTS_test_TPDM/sac_model/_cnn_roundabout_medium_0/policy.pth'
+    # agent.test_policy_path=f'./SMARTS_test_TPDM/sac_model/'+model_name +f'/model/final_{i}/policy.pth'
+    agent.test_policy_path='./SMARTS_test_TPDM/sac_model/_cnn_roundabout_medium_0/policy.pth'
     agent.evaluate()
     env.close()
